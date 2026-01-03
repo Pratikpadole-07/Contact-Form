@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ContactForm from "./Components/ContactForm";
-import ContactList from "./Components/ContactList";
+import ContactForm from "./Components/ContactForm.jsx";
+import ContactList from "./Components/ContactList.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
 console.log("API URL:", import.meta.env.VITE_API_URL);
