@@ -1,5 +1,5 @@
 import React from "react";
-import ContactItem from "./ContactItem";
+import ContactItem from "./contact-list";
 
 function ContactList({ contacts, onDelete }) {
   return (
