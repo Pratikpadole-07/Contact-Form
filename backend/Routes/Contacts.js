@@ -1,0 +1,50 @@
+const express = require('express');
+const router = express.Router();
+const Contact = require('../Models/Contact');
+const validator = require('validator');
+
+router.get('/', async (req, res) => {
+  try {
+    const contacts = await Contact.find().sort({ name: 1 });
+    res.json(contacts);
+  } catch {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.post('/', async (req, res) => {
+  const { name, email, phone, message } = req.body;
+
+  if (!name?.trim() || !email?.trim() || !phone?.trim()) {
+    return res.status(400).json({ error: 'Name, email, and phone are required' });
+  }
+
+  if (!validator.isEmail(email)) {
+    return res.status(400).json({ error: 'Invalid email' });
+  }
+
+  if (!validator.isMobilePhone(phone, 'any')) {
+    return res.status(400).json({ error: 'Invalid phone number' });
+  }
+
+  try {
+    const contact = await Contact.create({ name, email, phone, message });
+    res.status(201).json(contact);
+  } catch {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const deleted = await Contact.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Contact not found' });
+    }
+    res.json({ message: 'Contact deleted' });
+  } catch {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+module.exports = router;
