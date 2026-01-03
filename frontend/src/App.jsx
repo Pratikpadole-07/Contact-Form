@@ -3,7 +3,8 @@ import axios from "axios";
 import ContactForm from "./Components/ContactForm";
 import ContactList from "./Components/ContactList";
 
-const API_URL = "/api/contacts";
+const API_URL = import.meta.env.VITE_API_URL;
+console.log("API URL:", import.meta.env.VITE_API_URL);
 
 function App() {
   const [contacts, setContacts] = useState([]);
@@ -35,7 +36,7 @@ function App() {
 
   const deleteContact = async (id) => {
     try {
-      await axios.delete(`${API_URL}?id=${id}`);
+      await axios.delete(`${API_URL}/${id}`);
       setContacts((prev) => prev.filter((c) => c._id !== id));
     } catch (err) {
       console.error("Delete failed", err);
