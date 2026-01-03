@@ -1,7 +1,7 @@
 import React from "react";
-import ContactItem from "./contact-list";
+import ContactItem from "./contact-item";
 
-function ContactList({ contacts, onDelete }) {
+function ContactList({ contacts = [], onDelete }) {
   return (
     <div className="backdrop-blur-xl bg-white/60 border border-white/40 rounded-3xl shadow-xl">
       <div className="px-6 py-4 border-b border-white/40 flex justify-between">
@@ -9,7 +9,7 @@ function ContactList({ contacts, onDelete }) {
           Contacts
         </h2>
         <span className="text-sm text-slate-600">
-          {contacts.length} total
+          {Array.isArray(contacts) ? contacts.length : 0} total
         </span>
       </div>
 

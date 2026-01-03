@@ -17,7 +17,7 @@ function App() {
   const fetchContacts = async () => {
     try {
       const res = await axios.get(API_URL);
-      setContacts(res.data);
+      setContacts(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Fetch failed", err);
     }
@@ -59,7 +59,7 @@ function App() {
         )}
 
         <ContactForm onAdd={addContact} />
-        <ContactList contacts={contacts} onDelete={deleteContact} />
+        <ContactList contacts={Array.isArray(contacts) ? contacts : []} onDelete={deleteContact} />
       </main>
     </div>
   );
