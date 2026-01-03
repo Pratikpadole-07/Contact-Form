@@ -3,7 +3,7 @@ import axios from "axios";
 import ContactForm from "./Components/ContactForm";
 import ContactList from "./Components/ContactList";
 
-const API_URL = "http://localhost:5000/api/contacts";
+const API_URL = "/api/contacts";
 
 function App() {
   const [contacts, setContacts] = useState([]);
@@ -14,20 +14,32 @@ function App() {
   }, []);
 
   const fetchContacts = async () => {
-    const res = await axios.get(API_URL);
-    setContacts(res.data);
+    try {
+      const res = await axios.get(API_URL);
+      setContacts(res.data);
+    } catch (err) {
+      console.error("Fetch failed", err);
+    }
   };
 
   const addContact = async (contact) => {
-    await axios.post(API_URL, contact);
-    fetchContacts();
-    setSuccess("Contact added");
-    setTimeout(() => setSuccess(""), 2000);
+    try {
+      await axios.post(API_URL, contact);
+      await fetchContacts();
+      setSuccess("Contact added");
+      setTimeout(() => setSuccess(""), 2000);
+    } catch (err) {
+      console.error("Add failed", err);
+    }
   };
 
   const deleteContact = async (id) => {
-    await axios.delete(`${API_URL}/${id}`);
-    setContacts((prev) => prev.filter((c) => c._id !== id));
+    try {
+      await axios.delete(`${API_URL}?id=${id}`);
+      setContacts((prev) => prev.filter((c) => c._id !== id));
+    } catch (err) {
+      console.error("Delete failed", err);
+    }
   };
 
   return (
@@ -36,7 +48,6 @@ function App() {
         <h1 className="text-3xl font-bold text-emerald-700">
           Contact Manager
         </h1>
-        
       </header>
 
       <main className="max-w-6xl mx-auto px-6 space-y-10">
